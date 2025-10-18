@@ -99,7 +99,7 @@
 
         echo >> ~/.bashrc
         echo '# Initialize COMPAS Root Directory Environment Variable' >> ~/.bashrc
-        echo 'COMPAS_ROOT_DIR=~/repositories/COMPAS >> ~/.bashrc
+        echo 'COMPAS_ROOT_DIR=~/repositories/COMPAS' >> ~/.bashrc
         echo >> ~/.bashrc
 
 3. Reload terminal: `source ~/.bashrc`
