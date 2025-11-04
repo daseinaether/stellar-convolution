@@ -5,8 +5,10 @@ This project aims to further development and improvement to the SSPC code, origi
 Key elements from the original codebase have been migrated from GitLabs to facilitate a focused and controlled development environment.
 
 SSPC Repository: https://gitlab.com/dhendriks/syntheticstellarpopconvolve
+
 COMPAS Repository: https://github.com/TeamCOMPAS/COMPAS
 
 ### Reviewer
 Suoi-Nguon Pham – <aetheriofficial@gmail.com>
+
 Please feel free to reach out with any questions, comments, or concerns you may have!
