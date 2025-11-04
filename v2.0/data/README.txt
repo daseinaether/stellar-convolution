@@ -1,1 +1,0 @@
-Place your SNR_Grid HDF5 file here (e.g., SNR_Grid_IMRPhenomPv2_FD_all_noise.hdf5). The code auto-detects the first *.h5/ *.hdf5 file.

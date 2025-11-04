@@ -1,0 +1,3 @@
+Usage: docstr-coverage [OPTIONS] [PATHS]...
+
+Error: Invalid value for '[PATHS]...': Path 'syntheticstellarpopconvolve' does not exist.

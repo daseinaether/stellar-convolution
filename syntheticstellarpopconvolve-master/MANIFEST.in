@@ -1,0 +1,6 @@
+include README.md
+include requirements.txt
+include syntheticstellarpopconvolve/example_data/*.json
+include syntheticstellarpopconvolve/example_data/*.dat
+include syntheticstellarpopconvolve/example_data/*.h5
+prune */__pycache__

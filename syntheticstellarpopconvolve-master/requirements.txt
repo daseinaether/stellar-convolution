@@ -1,0 +1,12 @@
+h5py
+astropy
+pandas
+numpy
+voluptuous
+scipy
+setproctitle
+psutil
+tables
+simplejson
+halo
+matplotlib

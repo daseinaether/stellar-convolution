@@ -1,0 +1,40 @@
+# exclude: '.run_PPISN_population.py|.run_PPISN_population_new.py'
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.6.0
+  hooks:
+  -   id: trailing-whitespace
+  -   id: end-of-file-fixer
+  -   id: check-yaml
+
+- repo: https://github.com/psf/black
+  rev: 24.4.2
+  hooks:
+  - id: black
+    language_version: python3.9
+    # https://pre-commit.com/#arguments-pattern-in-hooks
+
+- repo: https://github.com/pycqa/isort
+  rev: 5.13.2
+  hooks:
+  - id: isort
+    args: ["--profile", "black"]
+
+#- repo: https://github.com/hadialqattan/pycln
+#  rev: v2.4.0 # Possible releases: https://github.com/hadialqattan/pycln/releases
+#  hooks:
+#    - id: pycln
+#      args: [--config=pyproject.toml]
+
+-   repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+    -   id: flake8
+        args: ['--ignore=E129,E2,E501,W503,E722,syntheticstellarpopconvolve/tests/main.py,docs/source/examples/']
+        exclude: |
+                    (?x)^(
+                        syntheticstellarpopconvolve/tests/main.py|
+                        docs/source/examples/example_plotting_distributions.py
+                    )$

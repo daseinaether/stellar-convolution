@@ -1,0 +1,16 @@
+myst-parser
+gitpython
+sphinx
+sphinx_autodoc_typehints
+nbsphinx
+twine
+docstr-coverage
+coverage
+coverage-badge
+hawkmoth
+clang
+sphinx_rtd_theme
+sphinx-math-dollar
+ipython
+pre-commit
+lxml_html_clean

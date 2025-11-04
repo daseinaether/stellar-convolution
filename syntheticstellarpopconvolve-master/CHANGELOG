@@ -1,0 +1,50 @@
+Changes for each syntheticstellarpopconvolve version since 0.1
+https://keepachangelog.com/en/0.3.0/
+
+	* 0.1:
+	- Initialised the repository. Migrated the code-base from binary_c-python to its own repo. Set up documentation, fixed testing and polishing notebooks.
+
+	* 0.2:
+	- Configuring MANIFEST and setup.py to ship the appropriate files and added __version__ info through syntheticstellarpopconvolve.__version__
+
+	* 0.3:
+	- Updated notebooks, made time units more flexible, allow usage of sfr_dict in extra_weights_function so that we can pass spatial information along in it.
+	- Added option to multiply the SFR by the time relevant time bin (using 'multiply_by_time_binsize' in 'convolution_config')
+
+	* 0.4:
+    - [features/stochastic_convolution]:
+    	- added support for Monte-Carlo sampling-based convolution which currently uses forward convolution. This includes:
+    	    - actually sampling instances of the systems
+    	    - assigning formation times,
+    	    - calculating event lookback times
+	    - added functionality to post-process the convolution results ('post_convolution_function'), replacing the extra_weights_function and position sampling function.
+	    - Added wrappers for different cases (event-convolution by sampling, event-convolution by integration, ensemble-convolution by integration)
+	    - created verification functionality for the convolution instructions, including documentation.
+    - [feature/multiple_return_dicts]:
+        - provided support for the return of multiple convolution_result dicts after the post-convolution function call. Useful for splitting results into different sets.
+        - changed the name for the internal field from yield-rate to normalized-yield, and other internal name changes.
+    - [feature/convolution-on-the-fly]:
+        - Added support for generic call to external code to generate and evolve systems on-the-fly
+        - restructured and moved much logic to convolve_populations.py
+        - added notebooks
+    - [feature/access-previous-result-and-store-persistant-info]:
+        - provided support for a sequential convolution, as opposed to multiprocessed
+        - provided support for to pass results of previous convolution in sequential convolution. This is accessible in the post-convolution hook.
+        - provided support for a persistent data storage dictionary where the user can store things in. This is accessible in the post-convolution hook.
+        - added option to reverse the convolution direction through convolution_instructions['reverse_convolution'] to allow accessing chronologically previous timestep data.
+    - [feature/inflate_ensemble]:
+        - moved all the ensemble-operation related functionality to `ensemble_utils.py`
+        - provided functionality to inflate ensemble which allows the user to use initially ensemble-based data like event-based data
+	- [feature/binned_data_convolution]:
+        - removed support for ensemble convolution through the recursive approach, and rather convolve the data through the event-based version but with configuration
+        - removed input data-type configuration and effects.
+        - implemented methods to convolve binned data
+        - added functionality to multiply the convolution results by the starformation time-bin size through `multiply_by_sfr_time_binsize` in the convolution config.
+        - added functionality to multiply the convolution results by the convolution time-bin size through `multiply_by_convolution_time_binsize` in the convolution config.
+        - added functionality for user to provide a unit for the 'normalized_yield' data, which overrides config['default_normalized_yield_unit'].
+		- cleaned structure and added notebooks
+	- [feature/backward_convolution_by_sampling_with_binned_data]:
+		- added support for backward convolution by sampling of binned data
+	  - Made a large restructuring of the code that allows convolution in both directions with sampling and integration.
+  - [feature/chunked_readout]:
+	  - added support for a chunked readout. Making it possible to process the input data in chunks, which is useful for very large convolution results.
