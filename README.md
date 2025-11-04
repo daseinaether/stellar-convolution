@@ -1,4 +1,4 @@
-# Synthetic Stellar Population Convolution (SSBC) Tool by David Hendriks
+# Synthetic Stellar Population Convolution (SSPC) Tool by David Hendriks
 SSPC is a post-processing tool for analyzing datasets produced by stellar population synthesis programs, such as COMPAS.
 
 This project aims to further development and improvement to the SSPC code, originally written by David Hendriks.
