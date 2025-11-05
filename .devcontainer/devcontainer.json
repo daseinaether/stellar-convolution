@@ -25,5 +25,5 @@
       ]
     }
   },
-  "postCreateCommand": "python -m pip install -U pip pip-tools pre-commit"
+  "postCreateCommand": "python -m pip install -U pip setuptools wheel 'pip-tools>=7.4.1' pre-commit ipykernel"
 }
