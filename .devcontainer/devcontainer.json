@@ -25,13 +25,14 @@
             ],
             "settings": {
                 "editor.formatOnSave": true,
-                "editor.codeActionsOnSave": {
-                    "source.organizeImports": "explicit"
-                },
+                "[python]": {
+                    "editor.defaultFormatter": "ms-python.black-formatter",
+                    "editor.codeActionsOnSave": {
+                        "source.organizeImports": "explicit"
+                    }
+                },              
                 "python.analysis.typeCheckingMode": "standard",
-                "python.formatting.provider": "none",
-                "black-formatter.args": ["--line-length", "100"],
-                "isort.args": ["--profile", "black"]
+                "python.formatting.provider": "none"
             }
         }
     }
