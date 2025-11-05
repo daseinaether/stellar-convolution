@@ -35,5 +35,6 @@
         "python.formatting.provider": "none"
       }
     }
-  }
+  },
+  "postCreateCommand": "python -m pip install -U pip pip-tools pre-commit"
 }
