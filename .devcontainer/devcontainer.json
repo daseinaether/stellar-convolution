@@ -26,5 +26,4 @@
     }
   },
   "postCreateCommand": "python -m pip install -U 'pip==24.3.1' setuptools wheel 'pip-tools==7.5.1' pre-commit ipykernel"
-
 }
