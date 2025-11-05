@@ -13,9 +13,12 @@
             "extensions": [
                 "ms-python.python",
                 "ms-python.vscode-pylance",
+                "ms-python.black-formatter",
+                "ms-python.isort",
                 "ms-toolsai.jupyter",
                 "ms-toolsai.jupyter-keymap",
                 "ms-toolsai.jupyter-renderers",
+                "ms-toolsai.datawrangler",
                 "ahmadawais.shades-of-purple",
                 "AlexBarnett.lapis-vscode",
                 "PKief.material-icon-theme"
