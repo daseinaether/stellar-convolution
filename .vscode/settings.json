@@ -1,13 +1,11 @@
 {
   "editor.formatOnSave": true,
-
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit"
     }
   },
-
   "python.analysis.typeCheckingMode": "standard",
   "python.formatting.provider": "none"
 }
