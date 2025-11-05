@@ -7,6 +7,9 @@ h5py>=3.12
 jupyter>=1.0
 ipykernel>=6.29
 
+# AstroPy
+astropy[recommended]>=6.0  # Strict: NumPy, PyERFA, PyYAML, packaging; Recommended: SciPy, Matplotlib
+
 # Tooling
 black>=24.10
 isort>=5.13
