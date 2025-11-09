@@ -1,6 +1,8 @@
+[project]
+requires-python = ">=3.12"
+
 [tool.black]
 line-length = 100
-target-version = ["py313", "py314"]
 
 [tool.isort]
 profile = "black"

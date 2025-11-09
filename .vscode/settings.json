@@ -1,4 +1,5 @@
 {
+  "python.defaultInterpreterPath": "/home/vscode/micromamba/envs/sspc/bin/python",
   "editor.formatOnSave": true,
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",

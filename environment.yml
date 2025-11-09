@@ -1,7 +1,8 @@
 name: sspc
 channels: [conda-forge]
 dependencies:
-    - python=3.14
+    - python=3.13
+    - numpy
     - astropy
     - scipy
     - matplotlib
