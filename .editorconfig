@@ -1,0 +1,22 @@
+root = true
+
+# Global Editor Configurations
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+charset = utf-8
+
+# Preserve two-space line breaks in Markdown files
+[*.md]
+trim_trailing_whitespace = false
+
+# Override indent size to 2 where the ecosystem expects it (optional but recommended)
+[*.{json,jsonc,yml,yaml,toml}]
+indent_size = 2
+
+# Makefile enforces tab indent style
+[Makefile]
+indent_style = tab
