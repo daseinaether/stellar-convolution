@@ -1,11 +1,14 @@
 // .devcontainer/devcontainer.json
 {
+  // ===== Baseline Framework =====
   "name": "sspc-prod-devcontainer",
   "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
   "features": {
     "ghcr.io/devcontainers/features/azure-cli:1": {},
     "ghcr.io/mamba-org/devcontainer-features/micromamba:1": {}
   },
+
+  // ===== Runtime Tooling =====
   "customizations": {
     "vscode": {
       "extensions": [
@@ -19,5 +22,7 @@
       ]
     }
   },
+
+  // ===== Post-Build Setup =====
   "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
