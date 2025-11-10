@@ -1,11 +1,17 @@
+// .vscode/settings.json
 {
-  "python.defaultInterpreterPath": "/home/vscode/micromamba/envs/sspc/bin/python",
+  // ===== Editor =====
   "editor.formatOnSave": true,
+
+  // ===== Language-specific Editor Configs =====
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "explicit"
+      "source.organizeImports": "always"
     }
   },
-  "python.analysis.typeCheckingMode": "standard"
+
+  // ===== Python =====
+  "python.defaultInterpreterPath": "/home/vscode/micromamba/envs/sspc/bin/python",
+  "python.analysis.typeCheckingMode": "standard",
 }
