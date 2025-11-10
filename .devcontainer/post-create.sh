@@ -37,13 +37,13 @@ if [ -n "${ENV_FILE:-}" ]; then
   micromamba create -y -n "$ENV" -f "$ENV_FILE" || \
   micromamba env update -n "$ENV" -f "$ENV_FILE"
 else
-  micromamba create -y -n "base" python=3.12
+  micromamba create -y -n "$ENV" python=3.12
 fi
 
 # Auto-activate env on future shell recurrences
 echo "micromamba activate $ENV" >> "$HOME/.bashrc"
 
 # Install pre-commit hooks if pre-commit package was successfully installed into env
-if command -v pre-commit >/dev/null 2>&1; then
-  pre-commit install || true
+if micromamba run -n "$ENV" pre-commit --version >/dev/null 2>&1; then
+  micromamba run -n "$ENV" pre-commit install || true
 fi
