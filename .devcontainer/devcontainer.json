@@ -12,17 +12,23 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        // Python
         "ms-python.python",
         "ms-python.vscode-pylance",
         "ms-python.black-formatter",
         "ms-python.isort",
+        // Jupyter Notebook
         "ms-toolsai.jupyter",
         "ms-toolsai.jupyter-keymap",
-        "ms-toolsai.jupyter-renderers"
+        "ms-toolsai.jupyter-renderers",
+        // Theme (optional)
+        "ahmadawais.shades-of-purple",
+        "AlexBarnett.lapis-vscode",
+        "PKief.material-icon-theme"
       ]
     }
   },
 
-  // ===== Post-Build Setup =====
+  // ===== Post-Create Setup =====
   "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
