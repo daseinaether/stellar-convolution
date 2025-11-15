@@ -1,4 +1,5 @@
 # .devcontainer/post-create.sh
+#!/usr/bin/env bash
 set -euxo pipefail
 
 # ===== AzCopy Installation =====
