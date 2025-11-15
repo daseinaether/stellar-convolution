@@ -13,5 +13,5 @@
 
   // ===== Python =====
   "python.defaultInterpreterPath": "/home/vscode/micromamba/envs/sspc/bin/python",
-  "python.analysis.typeCheckingMode": "standard",
+  "python.analysis.typeCheckingMode": "standard"
 }
