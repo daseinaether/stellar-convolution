@@ -12,6 +12,7 @@
   },
 
   // ===== Python =====
-  "python.defaultInterpreterPath": "/home/vscode/micromamba/envs/sspc/bin/python",
+  "python.defaultInterpreterPath": "${env:HOME}/micromamba/envs/sspc/bin/python",
   "python.analysis.typeCheckingMode": "standard"
 }
+
