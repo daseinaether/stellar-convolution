@@ -66,13 +66,13 @@ fi
 grep -q "micromamba activate $ENV" "$HOME/.bashrc" || \
 echo "micromamba activate $ENV" >> "$HOME/.bashrc"
 
-# Install pre-commit git hooks (if pre-commit package successfully installed)
-if micromamba run -n "$ENV" pre-commit --version >/dev/null 2>&1; then
-  micromamba run -n "$ENV" pre-commit install || true
-fi
+# Install and run pre-commit git hooks
+micromamba run -n "$ENV" pre-commit install >/dev/null 2>&1 || true
+micromamba run -n "$ENV" pre-commit run --all-files >/dev/null 2>&1 || true
 
-# Register Jupyter kernel (if ipykernel package successfully installed)
-micromamba run -n "$ENV" python -m ipykernel install --user --name "$ENV" --display-name "Python ($ENV)" || true
+# Register Jupyter kernel
+micromamba run -n "$ENV" python -m ipykernel install --user \
+  --name "$ENV" --display-name "Python ($ENV)" >/dev/null 2>&1 || true
 
 # Clean the container image
 micromamba clean -a -y || true
