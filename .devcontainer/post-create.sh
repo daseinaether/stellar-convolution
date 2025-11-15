@@ -40,7 +40,7 @@ ENV="sspc"
 ENV_FILE=""
 
 # Parse for env config file in root dir
-for F in environmemnt.yml environment.yaml; do
+for F in environment.yml environment.yaml; do
   if [ -f "$F" ]; then
     ENV_FILE="$F"
     break
@@ -71,7 +71,7 @@ if micromamba run -n "$ENV" pre-commit --version >/dev/null 2>&1; then
 fi
 
 # Register Jupyter kernel (if ipykernel package successfully installed)
-micromamba run -n "$ENV" python -m ipykernel install --name "$ENV" --display-name "Python ($ENV)" || true
+micromamba run -n "$ENV" python -m ipykernel install --user --name "$ENV" --display-name "Python ($ENV)" || true
 
 # Clean the container image
 micromamba clean -a -y || true
