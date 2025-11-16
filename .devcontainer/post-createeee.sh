@@ -26,26 +26,51 @@ sudo apt-get install azcopy
 
 # Announce AzCopy version if installed successfully
 azcopy --version || true
-
 # ===============================
 
+# # # Micromamba is already initialized during the container build process
+# # ===== Micromamba Init =====
+# # Many stellar population synthesis and post-processing code
+# # is written inside a conda-forge Python environment.
+# #
+# # Conda-forge is typically setup via the Miniforge3 installer;
+# # Micromamba is chosen here instead due to its compatibility with container environments.
 
-# ===== Create/update sspc environment in micromamba =====
+# # Setup shell hook for current instance
+# export MAMBA_ROOT="$HOME/micromamba"
+# eval "$(micromamba shell hook -s bash)"
+
+# # Persist shell hook for future recurrences (idempotent append)
+# grep -q 'micromamba shell hook -s bash' "$HOME/.bashrc" || {
+#   echo 'export MAMBA_ROOT="$HOME/micromamba"' >> "$HOME/.bashrc"
+#   echo 'eval "$(micromamba shell hook -s bash)"' >> "$HOME/.bashrc"
+# }
+
+# # The micromamba feature already defaults to strict channel_priority (conda-forge)
+# micromamba config set channel_priority strict
 
 # Initialize env setup vars
 ENV="sspc"
-CONFIG="environment.yaml"
+ENV_FILE=""
+
+# Parse for env config file in root dir
+for F in environment.yml environment.yaml; do
+  if [ -f "$F" ]; then
+    ENV_FILE="$F"
+    break
+  fi
+done
 
 # Create/update sspc environment
-if [ -n "$CONFIG" ]; then
+if [ -n "$ENV_FILE" ]; then
   # Create from file if missing; Otherwise, update in place.
-  micromamba create -y -n "$ENV" -f "$CONFIG" || \
-  micromamba env update -n "$ENV" -f "$CONFIG"
+  micromamba create -y -n "$ENV" -f "$ENV_FILE" || \
+  micromamba env update -n "$ENV" -f "$ENV_FILE"
 else
-  echo 'The "environment.yaml" configuration file was not found!'
+  # Fallback: Default to Python 3.12 (same as pyproject.toml)
+  micromamba create -y -n "$ENV" python=3.12
 fi
-
-# ========================================================
+# ===========================
 
 
 # ===== sspc env post-setup =====

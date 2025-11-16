@@ -27,8 +27,8 @@
         "PKief.material-icon-theme"
       ]
     }
-  }
+  },
 
   // ===== Post-Create Setup =====
-  // "postCreateCommand": "bash .devcontainer/post-create.sh"
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
 }
