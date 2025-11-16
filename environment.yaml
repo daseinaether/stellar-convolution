@@ -1,21 +1,21 @@
 name: sspc
 channels: [conda-forge]
 dependencies:
-    - python=3.12
-    - numpy
-    - astropy
-    - scipy
-    - matplotlib
-    - ipykernel
-    - ipython
-    - jupyter
-    - ipydatagrid
-    - h5py
-    - pandas
-    - black
-    - isort
-    - azure-identity
-    - azure-storage-blob
-    - requests
-    - pre-commit
-    - pip
+  - python=3.12
+  - numpy
+  - astropy
+  - scipy
+  - matplotlib
+  - ipykernel
+  - ipython
+  - jupyter
+  - ipydatagrid
+  - h5py
+  - pandas
+  - black
+  - isort
+  - azure-identity
+  - azure-storage-blob
+  - requests
+  - pre-commit
+  - pip
