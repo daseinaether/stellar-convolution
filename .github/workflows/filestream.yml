@@ -1,1 +1,77 @@
 # .github/workflows/filestream.yml
+name: Stream Datasets Into Azure Blob
+
+on:
+  workflow_dispatch:
+
+jobs:
+  stream-datasets:
+    runs-on: ubuntu-latest
+
+    env:
+      STORAGE_ACCOUNT: compasdatasets
+      CONTAINER: gwlandscape
+      AZ_SAS: ${{ secrets.GWLANDSCAPE_AZURE_BLOB_SAS }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install AzCopy
+        run: |
+          AZCOPY_TAR=azcopy_linux_amd64.tar.gz
+          curl -sSL https://aka.ms/downloadazcopy-v10-linux -o "$AZCOPY_TAR"
+          tar -xzf "$AZCOPY_TAR"
+          sudo cp ./azcopy_linux_amd64_*/azcopy /usr/local/bin/
+          azcopy --version
+
+      - name: Upload Files from datasets.txt
+        run: |
+          set -euo pipefail
+
+          FILE_LIST=".github/workflows/datasets.txt"
+
+          if [ ! -f "$FILE_LIST" ]; then
+            echo "datasets.txt not found at $FILE_LIST"
+            exit 1
+          fi
+
+          echo "Using file list: $FILE_LIST"
+          : > failed.txt  # Empty (or create) failed.txt
+
+          while read -r url blob_path; do
+            # Skip empty or commented lines
+            if [ -z "$url" ] || [[ "$url" == \#* ]]; then
+              continue
+            fi
+
+            echo "Uploading $url as $blob_path ..."
+
+            if curl -L "$url" \
+              | azcopy copy \
+                  "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/$blob_path?$AZ_SAS" \
+                  --from-to=PipeBlob \
+                  --check-length=true; then
+              echo "✅ SUCCESS: $blob_path"
+            else
+              echo "❌ FAILED:  $blob_path" | tee -a failed.txt
+            fi
+
+            echo
+          done < "$FILE_LIST"
+
+          echo "Upload pass completed."
+          if [ -s failed.txt ]; then
+            echo "Some uploads failed. Please refer to failed.txt in the workflow artifacts."
+            exit 1
+          else
+            echo "All uploads succeeded!"
+          fi
+
+      - name: Upload Failure List as Artifact (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: failed-uploads
+          path: failed.txt
+          if-no-files-found: ignore
