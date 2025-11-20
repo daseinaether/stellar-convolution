@@ -1,0 +1,33 @@
+<url> <author>/<model>/<parameters>/<file>.h5
+
+https://gwlandscape.org.au/file_download/?fileId=AAA adam-boesky/alpha_beta/alpha_2p0_beta_0p25/alpha_2p0_beta_0p25.h5
+https://gwlandscape.org.au/file_download/?fileId=BBB adam-boesky/sigma_rms_rmp/sigmaRMS_750_RMP_M/sigmaRMS_750_RMP_M.h5
+https://gwlandscape.org.au/file_download/?fileId=BBB adam-boesky/vanson22b_fig1/vanson22b_fig1.h5
+
+[12 sets]
+(43.3 GB)    adam-boesky/alpha_beta/alpha_2p0_beta_0p25/alpha_2p0_beta_0p25.h5
+(45.5 GB)    adam-boesky/alpha_beta/alpha_0p1_beta_0p5/alpha_0p1_beta_0p5.h5
+(42.3 GB)    adam-boesky/alpha_beta/alpha_0p5_beta_0p75/alpha_0p5_beta_0p75.h5
+(43.0 GB)    adam-boesky/alpha_beta/alpha_0p1_beta_0p75/alpha_0p1_beta_0p75.h5
+(51.2 GB)    adam-boesky/alpha_beta/alpha_10p0_beta_0p5/alpha_10p0_beta_0p5.h5
+(41.9 GB)    adam-boesky/alpha_beta/alpha_2p0_beta_0p5/alpha_2p0_beta_0p5.h5
+(48.1 GB)    adam-boesky/alpha_beta/alpha_0p1_beta_0p25/alpha_0p1_beta_0p25.h5
+(43.8 GB)    adam-boesky/alpha_beta/alpha_0p5_beta_0p25/alpha_0p5_beta_0p25.h5
+(41.7 GB)    adam-boesky/alpha_beta/alpha_0p5_beta_0p5/alpha_0p5_beta_0p5.h5
+(45.3 GB)    adam-boesky/alpha_beta/alpha_2p0_beta_0p75/alpha_2p0_beta_0p75.h5
+(49.0 GB)    adam-boesky/alpha_beta/alpha_10p0_beta_0p75/alpha_10p0_beta_0p75.h5
+(53.9 GB)    adam-boesky/alpha_beta/alpha_10p0_beta_0p25/alpha_10p0_beta_0p25
+
+[9 sets]
+(36.7 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_750_RMP_M/sigmaRMS_750_RMP_M.h5
+(47.2 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_750_RMP_D/sigmaRMS_750_RMP_D.h5
+(48.0 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_30_RMP_M/sigmaRMS_30_RMP_M.h5
+(44.0 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_265_RMP_M/sigmaRMS_265_RMP_M.h5
+(49.7 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_750_RMP_R/sigmaRMS_750_RMP_R.h5
+(49.9 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_265_RMP_D/sigmaRMS_265_RMP_D.h5
+(50.4 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_30_RMP_D/sigmaRMS_30_RMP_D.h5
+(44.7 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_30_RMP_R/sigmaRMS_30_RMP_R.h5
+(50.3 GB)    adam-boesky/sigma_rms_rmp/sigmaRMS_265_RMP_R/sigmaRMS_265_RMP_R.h5
+
+[1 set]
+(19.6 GB)    adam-boesky/vanson/vanson22b_fig1/vanson22b_fig1.h5
