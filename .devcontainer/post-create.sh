@@ -2,39 +2,11 @@
 # .devcontainer/post-create.sh
 set -euxo pipefail
 
-# ===== AzCopy Installation =====
-# Useful for streaming web-hosted datasets directly into Azure Blob Storage Containers.
-#
-# Allows for greater project flexibility, by removing the need to always carry the
-# physical hard drive containing the ~2+ TB datasets, and having code directly interface
-# with the cloud-hosted data anywhere in the world on any device.
-
-# Download repository configuration package
-curl -sSL -O https://packages.microsoft.com/config/ubuntu/24.04/packages-microsoft-prod.deb
-
-# Install repository configuration package
-sudo dpkg -i packages-microsoft-prod.deb
-
-# Remove repository configuration package after installation
-rm packages-microsoft-prod.deb
-
-# Update package index files
-sudo apt-get update
-
-# Install AzCopy
-sudo apt-get install azcopy
-
-# Announce AzCopy version if installed successfully
-azcopy --version || true
-
-# ===============================
-
-
 # ===== Setup SSPC Environment in Micromamba =====
 
 # Initialize vars for sspc env setup
 ENV="sspc"
-CONFIG="/workspaces/cosmic_integration_dasein/.devcontainer/environment.yaml"
+CONFIG=".devcontainer/environment.yaml"
 
 # Create the sspc env in micromamba
 micromamba create -y -n "$ENV" -f "$CONFIG"
