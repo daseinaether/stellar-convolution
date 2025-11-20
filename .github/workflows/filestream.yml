@@ -2,33 +2,108 @@
 name: Stream Datasets Into Azure Blob
 
 on:
+  # Currently set to manual startup.
   workflow_dispatch:
 
 jobs:
-  stream-datasets:
+  prepare-matrix:
     runs-on: ubuntu-latest
 
-    env:
-      STORAGE_ACCOUNT: compasdatasets
-      CONTAINER: gwlandscape
-      AZ_SAS: ${{ secrets.GWLANDSCAPE_AZURE_BLOB_SAS }}
+    outputs:
+      matrix: ${{ prepared.matrix }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Build Matrix Array from File
+        run: |
+          set -euo pipefail
+
+          # Initialize file path.
+          FILE_LIST=".github/workflows/datasets.txt"
+
+          # Exit if file not found.
+          if [ ! -f "$FILE_LIST" ]; then
+            echo "datasets.txt not found at $FILE_LIST"
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Initialize parsing variables.
+          i=0
+          entries=""
+          separation=""
+
+          # Parse through each line in the file.
+          while read -r url blob_path; do
+            # Skip empty and commented lines.
+            if [ -z "$url" ] || [[ "$url" == \#* ]]; then
+              continue
+            fi
+
+            # Continue to next line (update index).
+            i=$((i + 1))
+
+            # Append batch number object {"batch":i} to the JSON array.
+            entries="${entries}${separation}{\"batch\":${i}}"
+            separation=","
+          done < "$FILE_LIST"
+
+          # Exit if file has no active lines to read.
+          if [ "$i" -eq 0 ]; then
+            echo "No active datasets found in $FILE_LIST."
+            echo 'matrix={"include":[]}' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Create and export JSON array into matrix.
+          json="{\"include\":[${entries}]}"
+          echo "Matrix JSON: $json"
+          echo "matrix=${json}" >> "$GITHUB_OUTPUT"
+
+  stream-datasets:
+    needs: prepare-matrix
+    runs-on: ubuntu-latest
+
+    # Matrix strategy for streaming large quantities of datasets autonomously.
+    strategy:
+      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      # Stream files sequentially to prevent overloading the server with requests.
+      max-parallel: 1
+
+    # Setup global variables for the workflow.
+    env:
+      STORAGE_ACCOUNT: compasdatasets
+      CONTAINER: gwlandscape
+      # Generate container SAS token in Azure portal/CLI.
+      # Then, create GitHub Actions secret using token.
+      AZ_SAS: ${{ secrets.GWLANDSCAPE_AZURE_BLOB_SAS }}
+      # Current batch to be processed:
+      BATCH: ${{ matrix.batch }}
+      # Batch size limited to 1 file per job (sequential read).
+      BATCH_SIZE: 1
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+        # Install AzCopy into env for file streaming into Azure Blob.
       - name: Install AzCopy
         run: |
+          set -euo pipefail
+
           AZCOPY_TAR=azcopy_linux_amd64.tar.gz
           curl -sSL https://aka.ms/downloadazcopy-v10-linux -o "$AZCOPY_TAR"
           tar -xzf "$AZCOPY_TAR"
           sudo cp ./azcopy_linux_amd64_*/azcopy /usr/local/bin/
           azcopy --version
 
-      - name: Upload Files from datasets.txt
+      - name: Stream batch file from datasets.txt
         run: |
           set -euo pipefail
 
+          # Initialize file path.
           FILE_LIST=".github/workflows/datasets.txt"
 
           if [ ! -f "$FILE_LIST" ]; then
@@ -36,7 +111,15 @@ jobs:
             exit 1
           fi
 
+          # Convert global vars from string to int.
+          BATCH="${BATCH:-1}"
+          BATCH_SIZE="${BATCH_SIZE:-1}"
+
+          # Announce parameter values for current job.
           echo "Using file list: $FILE_LIST"
+          echo "Batch number: $BATCH"
+          echo "Batch size: $BATCH_SIZE"
+
           : > failed.txt  # Empty (or create) failed.txt
 
           while read -r url blob_path; do
