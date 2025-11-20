@@ -32,16 +32,17 @@ azcopy --version || true
 
 # ===== Create/update sspc environment in micromamba =====
 
-# Initialize env setup vars
+# Initialize vars for env setup
 ENV="sspc"
 CONFIG="environment.yaml"
 
 # Create/update sspc environment
 if [ -n "$CONFIG" ]; then
-  # Create from file if missing; Otherwise, update in place.
+  # Create env from file, if missing; Otherwise, update in place.
   micromamba create -y -n "$ENV" -f "$CONFIG" || \
   micromamba env update -n "$ENV" -f "$CONFIG"
 else
+  # Announce error if config file missing; exit env setup process.
   echo 'The "environment.yaml" configuration file was not found!'
 fi
 
