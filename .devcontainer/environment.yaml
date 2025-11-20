@@ -1,3 +1,4 @@
+# .devcontainer/environment.yaml
 name: sspc
 channels: [conda-forge]
 dependencies:

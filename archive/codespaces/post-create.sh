@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# .devcontainer/post-create.sh
+# /workspaces/cosmic_integration_dasein/.devcontainer/post-create.sh
 set -euxo pipefail
 
 # ===== AzCopy Installation =====
@@ -30,23 +30,43 @@ azcopy --version || true
 # ===============================
 
 
-# ===== Setup SSPC Environment in Micromamba =====
+# ===== Create/update sspc environment in micromamba =====
 
-# Initialize vars for sspc env setup
+# Initialize vars for env setup
 ENV="sspc"
 CONFIG="/workspaces/cosmic_integration_dasein/.devcontainer/environment.yaml"
 
-# Create the sspc env in micromamba
+# Create/update sspc environment
+# if [ -n "$CONFIG" ]; then
+#   # Create env from file, if missing; Otherwise, update in place.
+#   micromamba create -y -n "$ENV" -f "$CONFIG"
+# else
+#   # Announce error if config file missing; exit env setup process.
+#   echo 'The "environment.yaml" configuration file was not found!'
+# fi
+
+# ========================================================
+
+
+# ===== sspc env post-setup =====
+
+# Create the sspc environment in micromamba
 micromamba create -y -n "$ENV" -f "$CONFIG"
 
-# Auto-activate sspc env for future shell recurrences
+# Auto-activate env for future shell recurrences (idempotent append)
 echo "micromamba activate $ENV" >> "$HOME/.bashrc"
 
-# Install pre-commit git hooks
+# Install and run pre-commit git hooks
 micromamba run -n "$ENV" pre-commit install || true
 
 # Register Jupyter kernel
 micromamba run -n "$ENV" python -m ipykernel install --user \
   --name "$ENV" --display-name "Python ($ENV)" || true
+
+# Clean the container image
+micromamba clean -a -y || true
+
+# Announce completion
+echo "Post-creation process complete!"
 
 # ===============================
