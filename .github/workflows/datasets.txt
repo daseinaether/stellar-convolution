@@ -1,16 +1,16 @@
 # .github/workflows/datasets.txt
 
 # Adam Boesky - Alpha & Beta Parameters [12 sets]
-https://gwlandscape.org.au/file_download/?fileId=af130776-3b1c-4486-bb3e-ad2ff52428e9 adam-boesky/alpha_beta/alpha_2p0_beta_0p25/alpha_2p0_beta_0p25.h5
-https://gwlandscape.org.au/file_download/?fileId=58b715f3-b1ae-472c-8b13-2c50e261bafd adam-boesky/alpha_beta/alpha_0p1_beta_0p5/alpha_0p1_beta_0p5.h5
-https://gwlandscape.org.au/file_download/?fileId=beafde25-b05a-43f6-ba1c-74afe6b658af adam-boesky/alpha_beta/alpha_0p5_beta_0p75/alpha_0p5_beta_0p75.h5
-https://gwlandscape.org.au/file_download/?fileId=a775afc2-718d-4045-b517-2b8e657e21e3 adam-boesky/alpha_beta/alpha_0p1_beta_0p75/alpha_0p1_beta_0p75.h5
+# https://gwlandscape.org.au/file_download/?fileId=af130776-3b1c-4486-bb3e-ad2ff52428e9 adam-boesky/alpha_beta/alpha_2p0_beta_0p25/alpha_2p0_beta_0p25.h5
+# https://gwlandscape.org.au/file_download/?fileId=58b715f3-b1ae-472c-8b13-2c50e261bafd adam-boesky/alpha_beta/alpha_0p1_beta_0p5/alpha_0p1_beta_0p5.h5
+# https://gwlandscape.org.au/file_download/?fileId=beafde25-b05a-43f6-ba1c-74afe6b658af adam-boesky/alpha_beta/alpha_0p5_beta_0p75/alpha_0p5_beta_0p75.h5
+# https://gwlandscape.org.au/file_download/?fileId=a775afc2-718d-4045-b517-2b8e657e21e3 adam-boesky/alpha_beta/alpha_0p1_beta_0p75/alpha_0p1_beta_0p75.h5
 https://gwlandscape.org.au/file_download/?fileId=ace2ba7a-395a-4dc1-9a25-fcbe7aab791d adam-boesky/alpha_beta/alpha_10p0_beta_0p5/alpha_10p0_beta_0p5.h5
 https://gwlandscape.org.au/file_download/?fileId=519879a1-7873-450e-bb39-a027c3407780 adam-boesky/alpha_beta/alpha_2p0_beta_0p5/alpha_2p0_beta_0p5.h5
 https://gwlandscape.org.au/file_download/?fileId=8d343b9b-8654-426d-ba19-20778e5f243c adam-boesky/alpha_beta/alpha_0p1_beta_0p25/alpha_0p1_beta_0p25.h5
 https://gwlandscape.org.au/file_download/?fileId=376c28f0-88c0-4c7c-b668-9579b500e1e2 adam-boesky/alpha_beta/alpha_0p5_beta_0p25/alpha_0p5_beta_0p25.h5
 https://gwlandscape.org.au/file_download/?fileId=21afc895-b8a7-4fc5-8dc6-5f57fe9875d5 adam-boesky/alpha_beta/alpha_0p5_beta_0p5/alpha_0p5_beta_0p5.h5
-https://gwlandscape.org.au/file_download/?fileId=6b95beb8-6bb4-4609-93d9-0fe05a90d6ce adam-boesky/alpha_beta/alpha_2p0_beta_0p75/alpha_2p0_beta_0p75.h5
+# https://gwlandscape.org.au/file_download/?fileId=6b95beb8-6bb4-4609-93d9-0fe05a90d6ce adam-boesky/alpha_beta/alpha_2p0_beta_0p75/alpha_2p0_beta_0p75.h5
 https://gwlandscape.org.au/file_download/?fileId=37cdafc4-806e-497e-afa6-8d377db84510 adam-boesky/alpha_beta/alpha_10p0_beta_0p75/alpha_10p0_beta_0p75.h5
 https://gwlandscape.org.au/file_download/?fileId=9ee97c8d-8550-4e6d-9500-54be02e2c558 adam-boesky/alpha_beta/alpha_10p0_beta_0p25/alpha_10p0_beta_0p25.h5
 
