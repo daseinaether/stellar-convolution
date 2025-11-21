@@ -1,5 +1,5 @@
-# .github/workflows/filestream.yml
-name: Stream Datasets Into Azure Blob
+# .github/workflows/filestream.yaml
+name: Stream Datasets into Azure Blob
 
 on:
   # Currently set to manual startup.
@@ -10,13 +10,15 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      matrix: ${{ prepared.matrix }}
+      matrix: ${{ steps.build_matrix.outputs.matrix }}
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Build Matrix Array from File
+      - name: Build JSON Array from File
+        id: build_matrix
+        shell: bash
         run: |
           set -euo pipefail
 
@@ -33,7 +35,7 @@ jobs:
           # Initialize parsing variables.
           i=0
           entries=""
-          separation=""
+          separator=""
 
           # Parse through each line in the file.
           while read -r url blob_path; do
@@ -46,8 +48,8 @@ jobs:
             i=$((i + 1))
 
             # Append batch number object {"batch":i} to the JSON array.
-            entries="${entries}${separation}{\"batch\":${i}}"
-            separation=","
+            entries="${entries}${separator}{\"batch\":$i}"
+            separator=","
           done < "$FILE_LIST"
 
           # Exit if file has no active lines to read.
@@ -57,10 +59,10 @@ jobs:
             exit 0
           fi
 
-          # Create and export JSON array into matrix.
+          # Export JSON array into matrix.
           json="{\"include\":[${entries}]}"
           echo "Matrix JSON: $json"
-          echo "matrix=${json}" >> "$GITHUB_OUTPUT"
+          echo "matrix=$json" >> "$GITHUB_OUTPUT"
 
   stream-datasets:
     needs: prepare-matrix
@@ -68,7 +70,7 @@ jobs:
 
     # Matrix strategy for streaming large quantities of datasets autonomously.
     strategy:
-      matrix: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+      matrix: ${{ fromJson(needs['prepare-matrix'].outputs.matrix) }}
       # Stream files sequentially to prevent overloading the server with requests.
       max-parallel: 1
 
@@ -76,19 +78,13 @@ jobs:
     env:
       STORAGE_ACCOUNT: compasdatasets
       CONTAINER: gwlandscape
-      # Generate container SAS token in Azure portal/CLI.
-      # Then, create GitHub Actions secret using token.
+      # Container SAS token stored as GitHub secret.
       AZ_SAS: ${{ secrets.GWLANDSCAPE_AZURE_BLOB_SAS }}
-      # Current batch to be processed:
-      BATCH: ${{ matrix.batch }}
-      # Batch size limited to 1 file per job (sequential read).
-      BATCH_SIZE: 1
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-        # Install AzCopy into env for file streaming into Azure Blob.
       - name: Install AzCopy
         run: |
           set -euo pipefail
@@ -97,64 +93,69 @@ jobs:
           curl -sSL https://aka.ms/downloadazcopy-v10-linux -o "$AZCOPY_TAR"
           tar -xzf "$AZCOPY_TAR"
           sudo cp ./azcopy_linux_amd64_*/azcopy /usr/local/bin/
+
           azcopy --version
 
-      - name: Stream batch file from datasets.txt
+      - name: Stream Batch File
+        env:
+          BATCH: ${{ matrix.batch }}
         run: |
           set -euo pipefail
 
-          # Initialize file path.
+          # Initialize file path and current batch.
           FILE_LIST=".github/workflows/datasets.txt"
+          BATCH="${BATCH:-1}"
 
+          # Exit if file not found.
           if [ ! -f "$FILE_LIST" ]; then
             echo "datasets.txt not found at $FILE_LIST"
             exit 1
           fi
 
-          # Convert global vars from string to int.
-          BATCH="${BATCH:-1}"
-          BATCH_SIZE="${BATCH_SIZE:-1}"
-
-          # Announce parameter values for current job.
+          # Announce parameters for current job.
           echo "Using file list: $FILE_LIST"
-          echo "Batch number: $BATCH"
-          echo "Batch size: $BATCH_SIZE"
+          echo "Dataset index: $BATCH"
 
-          : > failed.txt  # Empty (or create) failed.txt
+          # Parse for the N-th active (non-empty, uncommented) line from file.
+          line=$(awk -v target="$BATCH" '
+            /^[[:space:]]*#/ {next}   # skip comments
+            NF == 0 {next}            # skip empty lines
+            {count++}
+            count == target {print; exit}
+          ' "$FILE_LIST")
 
-          while read -r url blob_path; do
-            # Skip empty or commented lines
-            if [ -z "$url" ] || [[ "$url" == \#* ]]; then
-              continue
-            fi
-
-            echo "Uploading $url as $blob_path ..."
-
-            if curl -L "$url" \
-              | azcopy copy \
-                  "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/$blob_path?$AZ_SAS" \
-                  --from-to=PipeBlob \
-                  --check-length=true; then
-              echo "✅ SUCCESS: $blob_path"
-            else
-              echo "❌ FAILED:  $blob_path" | tee -a failed.txt
-            fi
-
-            echo
-          done < "$FILE_LIST"
-
-          echo "Upload pass completed."
-          if [ -s failed.txt ]; then
-            echo "Some uploads failed. Please refer to failed.txt in the workflow artifacts."
-            exit 1
-          else
-            echo "All uploads succeeded!"
+          # Exit if corresponding file index not found.
+          if [ -z "$line" ]; then
+            echo "No dataset with index $BATCH."
+            exit 0
           fi
 
-      - name: Upload Failure List as Artifact (if any)
+          # Extract URL and blob path from the corresponding line.
+          url=$(printf '%s\n' "$line" | awk '{print $1}')
+          blob_path=$(printf '%s\n' "$line" | awk '{print $2}')
+
+          # Announce file upload commencing.
+          echo "Uploading [$BATCH] $url as $blob_path ..."
+
+          # Create/empty log for failed uploads.
+          : > failed_uploads.txt
+
+          # Use AzCopy to stream source file through stdout and into blob. Exit if upload failed.
+          if curl -L "$url" \
+            | azcopy copy \
+                "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/$blob_path?$AZ_SAS" \
+                --from-to=PipeBlob \
+                --check-length=true; then
+            echo "✅ SUCCESS [$BATCH]: $blob_path"
+          else
+            echo "❌ FAILED [$BATCH]: $blob_path" | tee -a failed_uploads.txt
+            exit 1
+          fi
+
+      - name: Upload Failure List as Artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: failed-uploads
-          path: failed.txt
+          name: failed-uploads-batch-${{ matrix.batch }}
+          path: failed_uploads.txt
           if-no-files-found: ignore
