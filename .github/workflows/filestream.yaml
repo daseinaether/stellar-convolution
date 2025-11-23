@@ -74,12 +74,11 @@ jobs:
       # Stream files sequentially to prevent overloading the server with requests.
       max-parallel: 1
 
-    # Setup global variables for the workflow.
+    # Intialize workflow variables with GitHub Actions secrets
     env:
-      STORAGE_ACCOUNT: compasdatasets
-      CONTAINER: gwlandscape
-      # Container SAS token stored as GitHub secret.
-      AZ_SAS: ${{ secrets.GWLANDSCAPE_AZURE_BLOB_SAS }}
+      STORAGE_ACCOUNT: ${{ secrets.AZURE_STORAGE_ACCOUNT }}
+      CONTAINER: ${{ secrets.AZURE_CONTAINER }}
+      SAS: ${{ secrets.ADLS_SAS }}
 
     steps:
       - name: Checkout Repository
@@ -143,7 +142,7 @@ jobs:
           # Use AzCopy to stream source file through stdout and into blob. Exit if upload failed.
           if curl -L "$url" \
             | azcopy copy \
-                "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/$blob_path?$AZ_SAS" \
+                "https://${STORAGE_ACCOUNT}.blob.core.windows.net/${CONTAINER}/$blob_path?$SAS" \
                 --from-to=PipeBlob \
                 --check-length=true; then
             echo "✅ SUCCESS [$BATCH]: $blob_path"
