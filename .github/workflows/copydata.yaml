@@ -1,0 +1,39 @@
+# .github/workflows/copydata.yaml
+name: Copy Data Across Azure Storage Accounts
+
+on:
+  workflow_dispatch:
+
+jobs:
+  copy-data:
+    runs-on: ubuntu-latest
+
+    env:
+      SRC_ACCOUNT: ${{ secrets.AZURE_SRC_ACCOUNT }}
+      SRC_SAS: ${{ secrets.AZURE_SRC_SAS }}
+      DST_ACCOUNT: ${{ secrets.AZURE_DST_ACCOUNT }}
+      DST_SAS: ${{ secrets.AZURE_DST_SAS }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install AzCopy
+        run: |
+          wget https://aka.ms/downloadazcopy-v10-linux -O azcopy.tar.gz
+          tar -xvf azcopy.tar.gz
+          AZCOPY_DIR=$(find . -maxdepth 1 -type d -name "azcopy_linux_*" | head -n 1)
+          sudo cp "$AZCOPY_DIR/azcopy" /usr/local/bin/
+          azcopy --version
+
+      - name: Copy Data
+        run: |
+          SRC_URL="https://${SRC_ACCOUNT}.blob.core.windows.net/${SRC_SAS}"
+          DST_URL="https://${DST_ACCOUNT}.blob.core.windows.net/${DST_SAS}"
+
+          echo "Source: $SRC_ACCOUNT"
+          echo "Destination: $DST_ACCOUNT"
+
+          azcopy copy "$SRC_URL" "$DST_URL" \
+            --recursive=true \
+            --log-level=WARNING
