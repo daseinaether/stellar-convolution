@@ -2,7 +2,6 @@
 {
   // ===== Editor =====
   "editor.formatOnSave": true,
-
   // ===== Language-specific Editor Configs =====
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
@@ -10,9 +9,14 @@
       "source.organizeImports": "always"
     }
   },
-
   // ===== Python =====
   "python.defaultInterpreterPath": "${env:HOME}/micromamba/envs/sspc/bin/python",
-  "python.analysis.typeCheckingMode": "standard"
+  "python.analysis.typeCheckingMode": "standard",
+  "python-envs.pythonProjects": [
+    {
+      "path": ".",
+      "envManager": "ms-python.python:conda",
+      "packageManager": "ms-python.python:conda"
+    }
+  ]
 }
-
