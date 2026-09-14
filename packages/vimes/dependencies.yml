@@ -1,0 +1,11 @@
+# dependencies.yaml
+name: vimes
+channels: [conda-forge]
+dependencies:
+  - python=3.13
+  - pip
+# The following are requirements specific to vimes:
+  - h5py
+  - imageio
+  - numpy
+  - tulips
